@@ -1,0 +1,25 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Data/artifacts
+embeddings.npy
+labels.npy
+embeddings_cache/
+backup_photos/
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Notebooks
+*.ipynb_checkpoints/

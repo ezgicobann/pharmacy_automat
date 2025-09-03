@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Ecza Otomatı - Yönetim Sistemi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .login-section {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 350px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .login-card h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .dashboard {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab-content {
+            min-height: 400px;
+        }
+
+        .prescription-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.2s ease;
+        }
+
+        .prescription-card:hover {
+            transform: translateX(5px);
+        }
+
+        .prescription-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .prescription-info {
+            flex: 1;
+        }
+
+        .prescription-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #cce7ff;
+            color: #004085;
+        }
+
+        .status-expired {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .medicine-list {
+            margin-top: 15px;
+        }
+
+        .medicine-item {
+            background: white;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .medicine-search {
+            position: relative;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-result-item {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .search-result-item:hover {
+            background: #f8f9fa;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .login-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Akıllı Ecza Otomatı</h1>
+            <p>Yüz Tanıma Teknolojisi ile Güvenli İlaç Dağıtım Sistemi</p>
+        </div>
+
+        <!-- Giriş Ekranı -->
+        <div id="loginSection" class="login-section">
+            <div class="login-card">
+                <h3>👨‍⚕️ Doktor Girişi</h3>
+                <div class="form-group">
+                    <label>Doktor Adı</label>
+                    <select id="doctorSelect">
+                        <option value="">Seçiniz...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Şifre</label>
+                    <input type="password" id="doctorPassword" placeholder="Şifrenizi girin">
+                </div>
+                <button class="btn btn-primary" onclick="doctorLogin()">Giriş Yap</button>
+            </div>
+
+            <div class="login-card">
+                <h3>👤 Hasta Girişi</h3>
+                <div class="form-group">
+                    <label>Hasta Adı</label>
+                    <select id="patientSelect">
+                        <option value="">Seçiniz...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>TC Kimlik No</label>
+                    <input type="text" id="patientTC" placeholder="11 haneli TC kimlik numaranız" maxlength="11">
+                </div>
+                <button class="btn btn-primary" onclick="patientLogin()">Giriş Yap</button>
+            </div>
+        </div>
+
+        <!-- Doktor Dashboard -->
+        <div id="doctorDashboard" class="dashboard hidden">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="avatar" id="doctorAvatar">Dr</div>
+                    <div>
+                        <h3 id="doctorName">Dr. Mehmet Yılmaz</h3>
+                        <p>Dahiliye Uzmanı</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">Çıkış Yap</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('prescribe')">Reçete Yaz</button>
+                <button class="tab" onclick="showTab('prescriptions')">Reçetelerim</button>
+                <button class="tab" onclick="showTab('patients')">Hastalar</button>
+            </div>
+
+            <div id="prescribeTab" class="tab-content">
+                <h4>Yeni Reçete Oluştur</h4>
+                <div id="prescriptionAlert"></div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Hasta Seç</label>
+                        <select id="prescriptionPatient" onchange="validatePrescriptionForm()">
+                            <option value="">Hasta seçiniz...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanı</label>
+                        <input type="text" id="diagnosis" placeholder="Hastalık tanısı" oninput="validatePrescriptionForm()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Hastane</label>
+                        <input type="text" id="hospital" value="Aydın Devlet Hastanesi" oninput="validatePrescriptionForm()">
+                    </div>
+                    <div class="form-group">
+                        <label>Başlangıç Tarihi</label>
+                        <input type="date" id="startDate" onchange="validatePrescriptionForm()">
+                    </div>
+                    <div class="form-group">
+                        <label>Bitiş Tarihi</label>
+                        <input type="date" id="endDate" onchange="validatePrescriptionForm()">
+                    </div>
+                </div>
+
+                <div class="form-group medicine-search">
+                    <label>İlaç Ekle</label>
+                    <input type="text" id="medicineSearch" placeholder="İlaç adını yazın..." oninput="searchMedicine()" onfocus="openMedicineList()" onclick="openMedicineList()">
+                    <div id="searchResults" class="search-results hidden"></div>
+                </div>
+
+                <div id="selectedMedicines">
+                    <h5>Seçili İlaçlar:</h5>
+                    <div id="medicinesList"></div>
+                </div>
+
+                <button id="createPrescriptionBtn" class="btn btn-primary" onclick="createPrescription()" disabled>Reçete Oluştur</button>
+            </div>
+
+            <div id="prescriptionsTab" class="tab-content hidden">
+                <h4>Oluşturduğum Reçeteler</h4>
+                <div id="doctorPrescriptionsList"></div>
+            </div>
+
+            <div id="patientsTab" class="tab-content hidden">
+                <h4>Hasta Listesi</h4>
+                <div id="patientsList"></div>
+            </div>
+        </div>
+
+        <!-- Hasta Dashboard -->
+        <div id="patientDashboard" class="dashboard hidden">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="avatar" id="patientAvatar">H</div>
+                    <div>
+                        <h3 id="patientName">Hasta Adı</h3>
+                        <p id="patientTC">TC: 12345678901</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">Çıkış Yap</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('myPrescriptions')">Reçetelerim</button>
+                <button class="tab" onclick="showTab('medicineHistory')">İlaç Geçmişi</button>
+                <button class="tab" onclick="showTab('profile')">Profilim</button>
+            </div>
+
+            <div id="myPrescriptionsTab" class="tab-content">
+                <h4>Aktif Reçetelerim</h4>
+                <div id="patientPrescriptionsList"></div>
+            </div>
+
+            <div id="medicineHistoryTab" class="tab-content hidden">
+                <h4>İlaç Alma Geçmişi</h4>
+                <div id="medicineHistoryList"></div>
+            </div>
+
+            <div id="profileTab" class="tab-content hidden">
+                <h4>Profil Bilgileri</h4>
+                <div id="patientProfile"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API tabanı
+        const API_BASE = 'http://127.0.0.1:5000/api';
+
+        // İlaçlar API'den yüklenecek
+        let medicines = [];
+
+        // Hastalar API'den yüklenecek
+        const patients = {};
+        // Doktorlar API'den yüklenecek
+        const doctors = {};
+
+        let currentUser = null;
+        let currentUserType = null;
+        let selectedMedicines = [];
+        let prescriptions = [];
+
+        // Yardımcı: Sunucudan reçeteleri getir
+        async function refreshPrescriptionsForDoctor(fullName) {
+            try {
+                const res = await fetch(`${API_BASE}/prescriptions?doctor_name=${encodeURIComponent(fullName)}`);
+                prescriptions = await res.json();
+            } catch (e) {
+                prescriptions = [];
+            }
+        }
+
+        async function refreshPrescriptionsForPatient(tc) {
+            try {
+                const res = await fetch(`${API_BASE}/prescriptions?patient_tc=${encodeURIComponent(tc)}`);
+                prescriptions = await res.json();
+            } catch (e) {
+                prescriptions = [];
+            }
+        }
+
+        // Giriş fonksiyonları
+        async function doctorLogin() {
+            const selEl = document.getElementById('doctorSelect');
+            const nameEl = document.getElementById('doctorNameInput');
+            const passEl = document.getElementById('doctorPassword');
+            const doctorId = (selEl && selEl.value ? selEl.value : '').trim();
+            const doctorNameInput = (nameEl && nameEl.value ? nameEl.value : '').trim();
+            const password = (passEl && passEl.value ? passEl.value : '').trim();
+            const hasName = Boolean(doctorId.length > 0 || doctorNameInput.length > 0);
+            if (!hasName || !password) {
+                alert('Lütfen tüm alanları doldurun!');
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/doctor_login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ doctor_name: doctorId || doctorNameInput, password })
+                });
+                if (!res.ok) {
+                    // Inline wrong password message inside the password field
+                    if (res.status === 401) {
+                        if (passEl) {
+                            passEl.value = '';
+                            passEl.placeholder = 'Yanlış şifre';
+                            passEl.style.borderColor = '#dc3545';
+                        }
+                        return; // stop without alert
+                    }
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.error || 'Giriş başarısız');
+                }
+                const data = await res.json();
+                const fullName = data?.doctor?.full_name || doctors[doctorId]?.full_name || doctorNameInput || 'Doktor';
+                currentUser = fullName;
+                currentUserType = 'doctor';
+                document.getElementById('doctorName').textContent = fullName;
+                const initials = fullName.split(' ').filter(Boolean).slice(0,2).map(n => n[0]).join('');
+                document.getElementById('doctorAvatar').textContent = initials || 'Dr';
+                if (passEl) { passEl.style.borderColor = ''; passEl.placeholder = 'Şifrenizi girin'; }
+                await refreshPrescriptionsForDoctor(fullName);
+                showDashboard('doctor');
+                loadDoctorData();
+            } catch (e) {
+                alert(e.message || 'Sunucu hatası');
+            }
+        }
+
+        async function patientLogin() {
+            const tcEl = document.getElementById('patientTC');
+            const selEl = document.getElementById('patientSelect');
+            const patientTC = tcEl ? tcEl.value : '';
+            const selectedPatient = selEl ? selEl.value : '';
+
+            if (patientTC && selectedPatient && patientTC === selectedPatient) {
+                currentUser = patientTC;
+                currentUserType = 'patient';
+                const patientData = patients[patientTC];
+                document.getElementById('patientName').textContent = patientData.name;
+                document.getElementById('patientTC').textContent = `TC: ${patientTC}`;
+                document.getElementById('patientAvatar').textContent = patientData.name.split(' ').map(n => n[0]).join('');
+                if (tcEl) { tcEl.style.borderColor = ''; tcEl.placeholder = '11 haneli TC kimlik numaranız'; }
+                await refreshPrescriptionsForPatient(patientTC);
+                showDashboard('patient');
+                loadPatientData();
+            } else {
+                if (tcEl) {
+                    tcEl.value = '';
+                    tcEl.placeholder = 'TC seçilen hasta ile uyuşmuyor';
+                    tcEl.style.borderColor = '#dc3545';
+                }
+            }
+        }
+
+        // Enter tuşu ile giriş
+        document.addEventListener('DOMContentLoaded', () => {
+            const doctorPasswordInput = document.getElementById('doctorPassword');
+            const doctorSelect = document.getElementById('doctorSelect');
+            const patientTCInput = document.getElementById('patientTC');
+            const patientSelect = document.getElementById('patientSelect');
+
+            const handleEnter = (e, action) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    action();
+                }
+            };
+
+            if (doctorPasswordInput) {
+                doctorPasswordInput.addEventListener('keydown', (e) => handleEnter(e, doctorLogin));
+            }
+            if (doctorSelect) {
+                doctorSelect.addEventListener('keydown', (e) => handleEnter(e, doctorLogin));
+            }
+            if (patientTCInput) {
+                patientTCInput.addEventListener('keydown', (e) => handleEnter(e, patientLogin));
+            }
+            if (patientSelect) {
+                patientSelect.addEventListener('keydown', (e) => handleEnter(e, patientLogin));
+            }
+
+            // Hastaları veritabanından yükle
+            fetchPatientsFromApi();
+
+            // İlaçları veritabanından yükle
+            fetch(`${API_BASE}/medicines`)
+                .then(r => r.json())
+                .then(data => { medicines = Array.isArray(data) ? data : []; })
+                .catch(() => { medicines = []; });
+
+            // Doktorları veritabanından yükle
+            fetch(`${API_BASE}/doctors`)
+                .then(r => r.json())
+                .then(list => {
+                    const sel = document.getElementById('doctorSelect');
+                    const opts = ['<option value="">Seçiniz...</option>'];
+                    (list || []).forEach(d => {
+                        const full = d.full_name || d.doctor_name || d.id;
+                        doctors[d.id] = { full_name: full };
+                        opts.push(`<option value="${d.id}">${full}</option>`);
+                    });
+                    if (sel) sel.innerHTML = opts.join('');
+                })
+                .catch(() => {});
+        });
+
+        function logout() {
+            currentUser = null;
+            currentUserType = null;
+            selectedMedicines = [];
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('doctorDashboard').classList.add('hidden');
+            document.getElementById('patientDashboard').classList.add('hidden');
+            
+            // Form alanlarını temizle
+            document.getElementById('doctorSelect').value = '';
+            document.getElementById('doctorPassword').value = '';
+            document.getElementById('patientSelect').value = '';
+            document.getElementById('patientTC').value = '';
+        }
+
+        function showDashboard(type) {
+            document.getElementById('loginSection').classList.add('hidden');
+            if (type === 'doctor') {
+                document.getElementById('doctorDashboard').classList.remove('hidden');
+                document.getElementById('patientDashboard').classList.add('hidden');
+            } else {
+                document.getElementById('patientDashboard').classList.remove('hidden');
+                document.getElementById('doctorDashboard').classList.add('hidden');
+            }
+        }
+
+        // Tab fonksiyonları
+        function showTab(tabName) {
+            // Tüm tabları gizle
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+            
+            // Aktif tab'ı göster
+            if (currentUserType === 'doctor') {
+                document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            } else {
+                document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            }
+            
+            // Tab butonlarını güncelle
+            const tabButtons = document.querySelectorAll('.tab');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // İlaç arama
+        function searchMedicine() {
+            const query = document.getElementById('medicineSearch').value.toLowerCase();
+            const results = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                // 2 karakterden azsa tüm listeyi göster
+                renderMedicineList(medicines);
+                results.classList.remove('hidden');
+                return;
+            }
+            
+            const filteredMedicines = medicines.filter(med => 
+                med.name.toLowerCase().includes(query) || 
+                med.active_ingredient.toLowerCase().includes(query)
+            );
+            
+            renderMedicineList(filteredMedicines);
+            results.classList.remove('hidden');
+        }
+
+        function openMedicineList() {
+            const results = document.getElementById('searchResults');
+            renderMedicineList(medicines);
+            results.classList.remove('hidden');
+        }
+
+        function renderMedicineList(listData) {
+            const results = document.getElementById('searchResults');
+            results.innerHTML = '';
+            listData.forEach(med => {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+                item.innerHTML = `<strong>${med.name}</strong> - ${med.active_ingredient} ${med.dosage}`;
+                item.onclick = () => addMedicine(med);
+                results.appendChild(item);
+            });
+            if (listData.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'search-result-item';
+                empty.textContent = 'Sonuç bulunamadı';
+                results.appendChild(empty);
+            }
+        }
+
+        function addMedicine(medicine) {
+            if (!selectedMedicines.find(m => m.id === medicine.id)) {
+                const dosageInstruction = prompt(`${medicine.name} için kullanım talimatı:`, "Günde 3 kez, yemeklerden sonra");
+                if (dosageInstruction) {
+                    selectedMedicines.push({...medicine, dosage_instruction: dosageInstruction});
+                    updateMedicinesList();
+                }
+            }
+            document.getElementById('medicineSearch').value = '';
+            document.getElementById('searchResults').classList.add('hidden');
+        }
+
+        function removeMedicine(medicineId) {
+            selectedMedicines = selectedMedicines.filter(m => m.id !== medicineId);
+            updateMedicinesList();
+        }
+
+        function updateMedicinesList() {
+            const list = document.getElementById('medicinesList');
+            list.innerHTML = '';
+            
+            selectedMedicines.forEach(med => {
+                const item = document.createElement('div');
+                item.className = 'medicine-item';
+                item.innerHTML = `
+                    <div>
+                        <strong>${med.name}</strong> - ${med.active_ingredient} ${med.dosage}<br>
+                        <small>${med.dosage_instruction}</small>
+                    </div>
+                    <button onclick="removeMedicine(${med.id})" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Kaldır</button>
+                `;
+                list.appendChild(item);
+            });
+            validatePrescriptionForm();
+        }
+
+        // Reçete oluşturma
+        async function createPrescription() {
+            const patientTC = document.getElementById('prescriptionPatient').value;
+            const diagnosis = document.getElementById('diagnosis').value;
+            const hospital = document.getElementById('hospital').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (!patientTC || !diagnosis || selectedMedicines.length === 0 || !startDate || !endDate) {
+                showAlert('Lütfen tüm alanları doldurun ve en az bir ilaç seçin!', 'error');
+                return;
+            }
+            
+            const payload = {
+                prescription_number: `RX${Date.now()}`,
+                patient_tc: patientTC,
+                doctor_name: document.getElementById('doctorName').textContent,
+                hospital_name: hospital,
+                diagnosis: diagnosis,
+                start_date: startDate,
+                end_date: endDate,
+                medicines: [...selectedMedicines]
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/prescriptions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.error || 'İşlem başarısız');
+                }
+                const data = await res.json();
+                prescriptions.push({ id: data.id, ...payload, status: 'active', created_at: new Date().toISOString() });
+                showAlert('Reçete başarıyla oluşturuldu!', 'success');
+            } catch (e) {
+                showAlert(e.message || 'Sunucu hatası', 'error');
+                return;
+            }
+            
+            // Formu temizle
+            document.getElementById('prescriptionPatient').value = '';
+            document.getElementById('diagnosis').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            selectedMedicines = [];
+            updateMedicinesList();
+            
+            loadDoctorData();
+        }
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('prescriptionAlert');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        // Veri yükleme fonksiyonları
+        function loadDoctorData() {
+            // Doktor reçetelerini yükle
+            const doctorPrescriptions = prescriptions.filter(p => 
+                p.doctor_name === document.getElementById('doctorName').textContent
+            );
+            
+            const prescriptionsList = document.getElementById('doctorPrescriptionsList');
+            prescriptionsList.innerHTML = '';
+            
+            doctorPrescriptions.forEach(prescription => {
+                const card = createPrescriptionCard(prescription);
+                prescriptionsList.appendChild(card);
+            });
+            
+            // Hasta listesini yükle
+            loadPatientsList();
+            validatePrescriptionForm();
+        }
+
+        function loadPatientData() {
+            // Hasta reçetelerini yükle
+            const patientPrescriptions = prescriptions.filter(p => p.patient_tc === currentUser);
+            
+            const prescriptionsList = document.getElementById('patientPrescriptionsList');
+            prescriptionsList.innerHTML = '';
+            
+            patientPrescriptions.forEach(prescription => {
+                const card = createPrescriptionCard(prescription);
+                prescriptionsList.appendChild(card);
+            });
+            
+            // Profil bilgilerini yükle
+            loadPatientProfile();
+        }
+
+        function validatePrescriptionForm() {
+            const patientTC = document.getElementById('prescriptionPatient').value;
+            const diagnosis = document.getElementById('diagnosis').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const createBtn = document.getElementById('createPrescriptionBtn');
+            const isValid = Boolean(patientTC && diagnosis && startDate && endDate && selectedMedicines.length > 0);
+            if (createBtn) {
+                createBtn.disabled = !isValid;
+            }
+        }
+
+        function createPrescriptionCard(prescription) {
+            const card = document.createElement('div');
+            card.className = 'prescription-card';
+            
+            const statusClass = prescription.status === 'active' ? 'status-active' : 
+                               prescription.status === 'completed' ? 'status-completed' : 'status-expired';
+            
+            const statusText = prescription.status === 'active' ? 'Aktif' : 
+                              prescription.status === 'completed' ? 'Tamamlandı' : 'Süresi Doldu';
+            
+            card.innerHTML = `
+                <div class="prescription-header">
+                    <div class="prescription-info">
+                        <h5>Reçete No: ${prescription.prescription_number}</h5>
+                        <p><strong>Hasta:</strong> ${patients[prescription.patient_tc]?.name || 'Bilinmeyen'}</p>
+                        <p><strong>Doktor:</strong> ${prescription.doctor_name}</p>
+                        <p><strong>Tanı:</strong> ${prescription.diagnosis}</p>
+                        <p><strong>Tarih:</strong> ${prescription.start_date} - ${prescription.end_date}</p>
+                    </div>
+                    <div class="prescription-status ${statusClass}">${statusText}</div>
+                </div>
+                <div class="medicine-list">
+                    <strong>İlaçlar:</strong>
+                    ${prescription.medicines.map(m => `
+                        <div class="medicine-item">
+                            <div>
+                                <strong>${m.name}</strong> - ${m.active_ingredient} ${m.dosage}<br>
+                                <small>${m.dosage_instruction || ''}</small>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function loadPatientsList() {
+            const list = document.getElementById('patientsList');
+            if (!list) return;
+            list.innerHTML = '';
+            Object.entries(patients).forEach(([tc, info]) => {
+                const item = document.createElement('div');
+                item.className = 'medicine-item';
+                item.innerHTML = `
+                    <div>
+                        <strong>${info.name}</strong><br>
+                        <small>TC: ${tc} • Doğum Tarihi: ${info.birth_date}</small>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        async function fetchPatientsFromApi() {
+            try {
+                const res = await fetch(`${API_BASE}/patients`);
+                const data = await res.json();
+                data.forEach(p => {
+                    const fullName = (p.full_name || `${p.name || ''} ${p.surname || ''}`).trim();
+                    patients[p.tc] = { name: fullName, birth_date: p.birth_date || '' };
+                });
+                const patientSelect = document.getElementById('patientSelect');
+                const prescriptionPatient = document.getElementById('prescriptionPatient');
+                const opts1 = ['<option value="">Seçiniz...</option>'].concat(
+                    Object.entries(patients).map(([tc, info]) => `<option value="${tc}">${info.name}</option>`)
+                ).join('');
+                if (patientSelect) patientSelect.innerHTML = opts1;
+                const opts2 = ['<option value="">Hasta seçiniz...</option>'].concat(
+                    Object.entries(patients).map(([tc, info]) => `<option value="${tc}">${info.name} (${tc})</option>`)
+                ).join('');
+                if (prescriptionPatient) prescriptionPatient.innerHTML = opts2;
+                loadPatientsList();
+            } catch (e) {
+                console.warn('Patients API error', e);
+            }
+        }
+
+        function loadPatientProfile() {
+            const container = document.getElementById('patientProfile');
+            if (!container) return;
+            const info = patients[currentUser] || {};
+            container.innerHTML = `
+                <div class="medicine-item">
+                    <div>
+                        <strong>${info.name || 'Bilinmeyen'}</strong><br>
+                        <small>TC: ${currentUser}</small><br>
+                        <small>Doğum Tarihi: ${info.birth_date || '-'}</small>
+                    </div>
+                </div>
+            `;
+
+            const history = document.getElementById('medicineHistoryList');
+            if (history) {
+                history.innerHTML = '';
+                const myPres = prescriptions.filter(p => p.patient_tc === currentUser);
+                myPres.forEach(p => {
+                    p.medicines.forEach(m => {
+                        const row = document.createElement('div');
+                        row.className = 'medicine-item';
+                        row.innerHTML = `
+                            <div>
+                                <strong>${m.name}</strong> - ${m.dosage}<br>
+                                <small>Reçete No: ${p.prescription_number} • ${p.start_date} - ${p.end_date}</small>
+                            </div>
+                        `;
+                        history.appendChild(row);
+                    });
+                });
+                if (history.children.length === 0) {
+                    history.innerHTML = '<div class="alert alert-error">Henüz geçmiş kaydı bulunmuyor.</div>';
+                }
+            }
+        }
+    </script>
+    </body>
+    </html>
