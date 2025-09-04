@@ -4,4 +4,4 @@ I am developing a project for a facial recognition-enabled pharmacy vending mach
 
 1. `known_faces` klasörü oluşturun
 2. Tanınan kişilerin her birinin adına bir klasör daha oluşturun.
-3. İçine kişi fotoğrafları ekleyin: Fotoğraf formatı: `1.jpg`-'50.jpg'
+3. İçine kişi fotoğrafları ekleyin: Fotoğraf formatı: `1.jpg`-`50.jpg`
